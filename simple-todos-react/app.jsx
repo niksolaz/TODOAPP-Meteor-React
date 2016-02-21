@@ -21,7 +21,8 @@ App = React.createClass({
 
 	    return {
 	    	tasks: Tasks.find(query, {sort: {createdAt: -1}}).fetch(),
-      	    incompleteCount: Tasks.find({checked: {$ne: true}}).count()
+      	    incompleteCount: Tasks.find({checked: {$ne: true}}).count(),
+      		currentUser: Meteor.user()
 	    }
 	  },
 
@@ -42,6 +43,8 @@ App = React.createClass({
 	    Tasks.insert({
 	      text: text,
 	      createdAt: new Date() // current time
+	      owner: Meteor.userId(),           
+      	  username: Meteor.user().username
 	    });
 	 
 	    // Clear form
@@ -68,7 +71,15 @@ App = React.createClass({
 			              onClick={this.toggleHideCompleted} />
 			            Hide Completed Tasks
 			         </label>
-
+			         <AccountsUIWrapper />
+			         { this.data.currentUser ?
+			            <form className="new-task" onSubmit={this.handleSubmit} >
+			              <input
+			                type="text"
+			                ref="textInput"
+			                placeholder="Type to add new tasks" />
+			            </form> : ''
+			          }
 					<form className="new-task" onSubmit={this.handleSubmit} >
 			            <input
 			              type="text"

@@ -2,6 +2,9 @@
 Tasks = new Mongo.Collection("tasks");
 
 if (Meteor.isClient){
+	 Accounts.ui.config({
+	    passwordSignupFields: "USERNAME_ONLY"
+	  });
 	//this code is executed on the client only
 	Meteor.startup(function(){
 		//Use Meteor.startup to render the component after the page is ready
